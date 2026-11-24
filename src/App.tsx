@@ -5,6 +5,10 @@ import PageLayout from './components/layout/PageLayout/PageLayout';
 import ComponentPreviewPage from './pages/preview/ComponentPreviewPage';
 import FoodCard from './components/ui/FoodCard/FoodCard';
 import Dropdown, { type DropdownOption } from './components/ui/Dropdown/Dropdown';
+import Modal from './components/ui/Modal/Modal';
+import { TableSessionManager } from './components/layout/TableSessionManager/TableSessionManager';
+import { INITIAL_TABLES } from './mock/posData';
+import { FloorTable, OrderMode, DeliveryPartner } from './types/pos';
 import dishSalmon from './assets/dish-salmon.jpg';
 import dishRisotto from './assets/dish-risotto.jpg';
 import dishGourmet from './assets/dish-gourmet.jpg';
@@ -127,6 +131,46 @@ export function App() {
   const [selectedSpecialId, setSelectedSpecialId] = useState<string | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Table & Session State (Cashier POS Subsystem 1 & 2)
+  const [tables, setTables] = useState<FloorTable[]>(INITIAL_TABLES);
+  const [selectedTableId, setSelectedTableId] = useState<string | null>('tbl-1');
+  const [orderMode, setOrderMode] = useState<OrderMode>('DINE_IN');
+  const [deliveryPartner, setDeliveryPartner] = useState<DeliveryPartner>('DIRECT');
+  const [takeawayTokenNumber, setTakeawayTokenNumber] = useState<number>(105);
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+  const [transferTargetId, setTransferTargetId] = useState<string>('tbl-2');
+
+  const handleTransferTable = () => {
+    if (!selectedTableId || !transferTargetId || selectedTableId === transferTargetId) return;
+    setTables((prev) => {
+      const source = prev.find((t) => t.tableId === selectedTableId);
+      if (!source) return prev;
+      return prev.map((t) => {
+        if (t.tableId === selectedTableId) {
+          return {
+            ...t,
+            status: 'available',
+            activeOrderId: null,
+            sessionStartTime: null,
+            guestCount: 0,
+          };
+        }
+        if (t.tableId === transferTargetId) {
+          return {
+            ...t,
+            status: 'occupied',
+            activeOrderId: source.activeOrderId || 'ord-transfer',
+            sessionStartTime: source.sessionStartTime || '15:30',
+            guestCount: source.guestCount || 2,
+          };
+        }
+        return t;
+      });
+    });
+    setSelectedTableId(transferTargetId);
+    setIsTransferModalOpen(false);
+  };
+
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.toLowerCase();
@@ -180,11 +224,24 @@ export function App() {
       ) : (
         <PageLayout
           leftColumn={
-            <div className="layout-placeholder-card col-1-card">
-              <div className="card-tag">Column 1 (1x)</div>
-              <h3>Left Panel</h3>
-              <p>Ready for left sidebar / categories / floor navigation</p>
-            </div>
+            <TableSessionManager
+              tables={tables}
+              selectedTableId={selectedTableId}
+              onSelectTable={(table) => setSelectedTableId(table.tableId)}
+              orderMode={orderMode}
+              onOrderModeChange={setOrderMode}
+              deliveryPartner={deliveryPartner}
+              onDeliveryPartnerChange={setDeliveryPartner}
+              takeawayTokenNumber={takeawayTokenNumber}
+              onNewTakeawayToken={() => setTakeawayTokenNumber((prev) => prev + 1)}
+              onOpenTransferModal={() => {
+                const otherTable = tables.find(
+                  (t) => t.tableId !== selectedTableId && t.status === 'available'
+                );
+                if (otherTable) setTransferTargetId(otherTable.tableId);
+                setIsTransferModalOpen(true);
+              }}
+            />
           }
           centerColumn={
             <div className="center-work-section">
@@ -206,6 +263,8 @@ export function App() {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       aria-label="Search dishes and menu items"
+                      spellCheck={false}
+                      autoComplete="off"
                     />
                     {searchQuery && (
                       <button
@@ -308,6 +367,70 @@ export function App() {
             </div>
           }
         />
+      )}
+
+      {/* Table Transfer Modal Dialog */}
+      {isTransferModalOpen && (
+        <Modal
+          isOpen={isTransferModalOpen}
+          onClose={() => setIsTransferModalOpen(false)}
+          title="Transfer Table Session"
+          size="sm"
+          footer={
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', width: '100%' }}>
+              <button
+                type="button"
+                className="modal-secondary-btn"
+                onClick={() => setIsTransferModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="modal-primary-btn"
+                onClick={handleTransferTable}
+              >
+                Confirm Transfer
+              </button>
+            </div>
+          }
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <p style={{ margin: 0, fontSize: '0.875rem', color: '#64748b', lineHeight: 1.5 }}>
+              Transfer active order and guest session from{' '}
+              <strong style={{ color: '#f97316' }}>
+                {tables.find((t) => t.tableId === selectedTableId)?.tableNumber || 'Selected Table'}
+              </strong>{' '}
+              to a destination table.
+            </p>
+            <label style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#1e293b' }}>
+              Destination Table
+              <select
+                value={transferTargetId}
+                onChange={(e) => setTransferTargetId(e.target.value)}
+                style={{
+                  width: '100%',
+                  marginTop: '6px',
+                  padding: '9px 12px',
+                  borderRadius: '8px',
+                  border: '1px solid #cbd5e1',
+                  fontFamily: 'inherit',
+                  fontSize: '0.875rem',
+                  outline: 'none',
+                  backgroundColor: '#ffffff',
+                }}
+              >
+                {tables
+                  .filter((t) => t.tableId !== selectedTableId)
+                  .map((t) => (
+                    <option key={t.tableId} value={t.tableId}>
+                      {t.tableNumber} ({t.floorZone}) - {t.seatingCapacity} Seats [{t.status}]
+                    </option>
+                  ))}
+              </select>
+            </label>
+          </div>
+        </Modal>
       )}
     </div>
   );

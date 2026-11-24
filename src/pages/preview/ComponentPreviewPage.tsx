@@ -15,6 +15,9 @@ import dishSalmon from '../../assets/dish-salmon.jpg';
 import dishRisotto from '../../assets/dish-risotto.jpg';
 import dishGourmet from '../../assets/dish-gourmet.jpg';
 import dishSalad from '../../assets/dish-salad.jpg';
+import { TableSessionManager } from '../../components/layout/TableSessionManager/TableSessionManager';
+import { INITIAL_TABLES } from '../../mock/posData';
+import { FloorTable, OrderMode, DeliveryPartner } from '../../types/pos';
 import {
   Plus,
   Minus,
@@ -30,7 +33,12 @@ import {
 export function ComponentPreviewPage() {
   const [inputValue, setInputValue] = useState('');
 
-  // Base Modal showcase states
+  // Table & Session Manager preview state
+  const [previewTables, setPreviewTables] = useState<FloorTable[]>(INITIAL_TABLES);
+  const [previewSelectedTableId, setPreviewSelectedTableId] = useState<string | null>('tbl-1');
+  const [previewOrderMode, setPreviewOrderMode] = useState<OrderMode>('DINE_IN');
+  const [previewPartner, setPreviewPartner] = useState<DeliveryPartner>('DIRECT');
+  const [previewToken, setPreviewToken] = useState<number>(108);
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -702,6 +710,43 @@ export function ComponentPreviewPage() {
               onAction={() => alert('Viewing details')}
             />
           </div>
+        </div>
+      </section>
+
+      {/* 9. Left Panel: Table & Session Manager (Column 1 - 1x) */}
+      <section className="preview-section">
+        <h2 className="preview-section-title">9. Left Panel: Table & Session Manager (Column 1 - 1x)</h2>
+        <p className="preview-section-subtitle">
+          Interactive table matrix, Dine In / Takeaway / Delivery mode switcher, floor zone filter pills, and live floor status counts.
+        </p>
+
+        <div style={{ maxWidth: '380px', height: '620px', margin: '0 auto' }}>
+          <TableSessionManager
+            tables={previewTables}
+            selectedTableId={previewSelectedTableId}
+            onSelectTable={(table) => setPreviewSelectedTableId(table.tableId)}
+            orderMode={previewOrderMode}
+            onOrderModeChange={setPreviewOrderMode}
+            deliveryPartner={previewPartner}
+            onDeliveryPartnerChange={setPreviewPartner}
+            takeawayTokenNumber={previewToken}
+            onNewTakeawayToken={() => setPreviewToken((p) => p + 1)}
+            onOpenTransferModal={() => {
+              const free = previewTables.find((t) => t.status === 'available');
+              if (free && previewSelectedTableId) {
+                setPreviewTables((prev) =>
+                  prev.map((t) =>
+                    t.tableId === previewSelectedTableId
+                      ? { ...t, status: 'available' }
+                      : t.tableId === free.tableId
+                      ? { ...t, status: 'occupied' }
+                      : t
+                  )
+                );
+                setPreviewSelectedTableId(free.tableId);
+              }
+            }}
+          />
         </div>
       </section>
     </div>
