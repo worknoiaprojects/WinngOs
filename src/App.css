@@ -78,8 +78,10 @@
 
 .catalog-search-icon {
   position: absolute;
-  left: 9px;
-  color: var(--text-muted);
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-primary);
   pointer-events: none;
   transition: color 0.2s ease;
 }
@@ -90,49 +92,54 @@
   border-radius: var(--border-radius-full);
   border: 1px solid var(--border-color);
   background-color: #f8fafc;
-  padding: 0 24px 0 28px;
-  font-family: var(--font-family-base);
-  font-size: 0.75rem;
-  color: var(--text-main);
+  padding: 0 32px 0 32px;
+  font-family: "DM Sans", var(--font-family-base), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(30, 41, 59, 0.75);
+  caret-color: var(--color-primary);
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   outline: none;
   box-sizing: border-box;
 }
 
 .catalog-search-input::placeholder {
-  color: var(--text-light);
+  color: rgba(100, 116, 139, 0.6);
+  font-family: "DM Sans", var(--font-family-base), sans-serif;
+  font-weight: 400;
 }
 
 .catalog-search-input:focus {
   background-color: #ffffff;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.18);
-}
-
-.catalog-search-wrapper:focus-within .catalog-search-icon {
-  color: var(--color-primary);
+  box-shadow: none;
 }
 
 .catalog-search-clear-btn {
   position: absolute;
-  right: 5px;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 16px;
   height: 16px;
   border-radius: 50%;
   border: none;
-  background-color: var(--bg-muted);
-  color: var(--text-muted);
-  display: flex;
+  background-color: #e2e8f0;
+  color: #64748b;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   padding: 0;
   transition: all 0.15s ease;
+  z-index: 2;
 }
 
 .catalog-search-clear-btn:hover {
   background-color: var(--color-primary);
   color: #ffffff;
+  transform: translateY(-50%) scale(1.08);
 }
 
 /* Circular Filter Pills (Single Row with breathing room) */

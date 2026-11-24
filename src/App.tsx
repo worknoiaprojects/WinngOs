@@ -214,7 +214,7 @@ export function App() {
                         onClick={() => setSearchQuery('')}
                         aria-label="Clear search input"
                       >
-                        <X size={13} />
+                        <X size={11} strokeWidth={2.5} />
                       </button>
                     )}
                   </div>
