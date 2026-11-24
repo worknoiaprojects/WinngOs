@@ -1,0 +1,86 @@
+/* 1 : 2 : 1 Column Width Grid Layout (Full screen width on desktop) */
+.page-grid-1-2-1 {
+  width: 100%;
+  margin: 0;
+  padding: 0 var(--space-4) var(--space-4);
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: var(--space-4);
+  min-height: calc(100vh - 78px);
+}
+
+.grid-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+}
+
+.col-left {
+  /* 1 part of ratio */
+  position: relative;
+}
+
+.col-center {
+  /* 2 parts of ratio */
+  position: relative;
+}
+
+.col-right {
+  /* 1 part of ratio */
+  position: relative;
+}
+
+/* ============================================================
+   TABLET OPTIMIZATIONS
+   ============================================================ */
+
+/* 1. Tablet Landscape (961px to 1180px) */
+@media (max-width: 1180px) and (min-width: 961px) {
+  .page-grid-1-2-1 {
+    grid-template-columns: 1.1fr 2fr 1.1fr;
+    gap: var(--space-3);
+    padding: 0 var(--space-3) var(--space-3);
+  }
+}
+
+/* 2. Tablet Portrait (641px to 960px)
+   Column 1 (Left panel/filters) spans the top row full width,
+   Column 2 (Center work area) & Column 3 (Right panel) split the bottom 2:1 */
+@media (max-width: 960px) {
+  .page-grid-1-2-1 {
+    grid-template-columns: 1.8fr 1.2fr;
+    grid-template-rows: auto 1fr;
+    gap: var(--space-3);
+    padding: 0 var(--space-3) var(--space-3);
+    min-height: calc(100vh - 70px);
+  }
+
+  .col-left {
+    grid-column: 1 / -1;
+    height: auto;
+  }
+
+  .col-center {
+    grid-column: 1 / 2;
+  }
+
+  .col-right {
+    grid-column: 2 / 3;
+  }
+}
+
+/* 3. Small Screen / Phone (<= 640px) */
+@media (max-width: 640px) {
+  .page-grid-1-2-1 {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: var(--space-3);
+  }
+
+  .col-left,
+  .col-center,
+  .col-right {
+    grid-column: 1 / -1;
+  }
+}

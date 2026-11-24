@@ -1,0 +1,150 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--border-radius-md);
+  font-weight: var(--font-weight-medium);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  border: 1px solid transparent;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden; /* Clips the light wave within the button's rounded edges */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Soft Center-to-Sides Light Wave */
+.btn-wave-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.12) 50%, transparent 80%);
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0.05);
+  transform-origin: center;
+  z-index: 2;
+}
+
+/* Wave expansion keyframe when tapped / clicked */
+.btn.is-waving .btn-wave-glow {
+  animation: centerWaveSpread 420ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes centerWaveSpread {
+  0% {
+    opacity: 0.3;
+    transform: scaleX(0.05);
+  }
+  35% {
+    opacity: 0.22;
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1.4);
+  }
+}
+
+/* Subtle physical press feedback */
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Content layer above the subtle wave */
+.btn-content,
+.btn-icon,
+.btn-spinner {
+  position: relative;
+  z-index: 3;
+}
+
+/* Sizes */
+.btn-sm {
+  padding: 6px 12px;
+  font-size: var(--font-size-xs);
+}
+
+.btn-md {
+  padding: 8px 16px;
+  font-size: var(--font-size-sm);
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: var(--font-size-md);
+}
+
+/* Variants */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+  box-shadow: 0 1px 2px 0 rgba(249, 115, 22, 0.2);
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  box-shadow: 0 2px 6px 0 rgba(249, 115, 22, 0.28);
+}
+
+.btn-secondary {
+  background-color: var(--bg-surface-alt);
+  color: var(--text-main);
+  border-color: var(--border-color);
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--border-color);
+}
+.btn-secondary .btn-wave-glow {
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 80%);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.btn-outline:hover:not(:disabled) {
+  background-color: var(--color-primary-light);
+}
+.btn-outline .btn-wave-glow {
+  background: radial-gradient(ellipse at center, rgba(249, 115, 22, 0.25) 0%, rgba(249, 115, 22, 0.08) 50%, transparent 80%);
+}
+
+.btn-warning {
+  background-color: var(--color-warning);
+  color: #78350f;
+}
+.btn-warning:hover:not(:disabled) {
+  background-color: #d97706;
+  color: #ffffff;
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: var(--text-inverse);
+}
+.btn-danger:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* States: Disabled */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none !important;
+}
+
+/* States: Loading */
+.btn.is-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.btn-spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

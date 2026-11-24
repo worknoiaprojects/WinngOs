@@ -1,0 +1,67 @@
+.input-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.input-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-main);
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--text-main);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+/* States: Focus */
+.custom-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* States: Disabled */
+.custom-input:disabled {
+  background-color: var(--bg-surface-alt);
+  color: var(--text-light);
+  cursor: not-allowed;
+  border-color: var(--border-color);
+}
+
+/* States: Error */
+.state-error .custom-input {
+  border-color: var(--color-danger);
+}
+.state-error .custom-input:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* States: Success */
+.state-success .custom-input {
+  border-color: var(--color-success);
+}
+
+.input-message {
+  font-size: var(--font-size-xs);
+}
+
+.error-msg {
+  color: var(--color-danger);
+}
+
+.helper-msg {
+  color: var(--text-muted);
+}

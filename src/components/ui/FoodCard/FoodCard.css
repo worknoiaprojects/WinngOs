@@ -1,0 +1,232 @@
+.food-card {
+  width: 100%;
+  max-width: 200px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 10px 10px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 8px 24px -4px rgba(249, 115, 22, 0.08), 0 3px 8px -2px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(249, 115, 22, 0.1);
+  font-family: var(--font-family-base);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease;
+  user-select: none;
+}
+
+.food-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px -6px rgba(249, 115, 22, 0.16), 0 6px 12px -3px rgba(0, 0, 0, 0.04);
+  border-color: rgba(249, 115, 22, 0.28);
+}
+
+/* Top Right Favorite Button (Orange & White Theme) */
+.food-card-heart-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background-color: var(--color-primary-light);
+  color: #fb923c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(249, 115, 22, 0.18);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.food-card-heart-btn:hover {
+  background-color: #ffedd5;
+  color: var(--color-primary);
+  border-color: rgba(249, 115, 22, 0.35);
+  transform: scale(1.06);
+}
+
+.food-card-heart-btn:active {
+  transform: scale(0.92);
+}
+
+.food-card-heart-btn.is-active {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(249, 115, 22, 0.35);
+}
+
+.food-card-heart-icon {
+  transition: transform 0.2s ease;
+}
+
+/* Food Plate Image Container */
+.food-card-image-wrapper {
+  width: 96px;
+  height: 96px;
+  margin: 8px 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.food-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: drop-shadow(0 8px 12px rgba(249, 115, 22, 0.14)) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.08));
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.food-card:hover .food-card-image {
+  transform: scale(1.05) rotate(1deg);
+}
+
+/* Title & Subtitle */
+.food-card-content {
+  text-align: center;
+  width: 100%;
+  padding: 0 2px;
+}
+
+.food-card-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.015em;
+  margin: 0 0 2px;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.food-card-subtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Bottom Action Bar (Orange & White Theme) */
+.food-card-action-bar {
+  width: 100%;
+  margin-top: 10px;
+  background-color: var(--color-primary-light);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: 9999px;
+  height: 36px;
+  padding: 2px 2px 2px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.food-card-price {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+/* Orange Docked Plus Button */
+.food-card-add-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(249, 115, 22, 0.35);
+}
+
+.food-card-add-btn:hover {
+  background-color: var(--color-primary-hover);
+  transform: scale(1.05);
+}
+
+.food-card-add-btn:active,
+.food-card-add-btn.is-pressed {
+  transform: scale(0.92);
+  background-color: #c2410c;
+}
+
+.add-icon {
+  stroke-width: 2.5;
+}
+
+/* Converted Quantity Stepper (- [qty] +) */
+.food-card-stepper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-primary);
+  border-radius: 9999px;
+  height: 30px;
+  padding: 2px;
+  gap: 2px;
+  box-shadow: 0 2px 6px rgba(249, 115, 22, 0.35);
+  animation: stepperPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes stepperPopIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.food-card-stepper-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: transparent;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.food-card-stepper-btn:hover {
+  background-color: rgba(255, 255, 255, 0.22);
+  transform: scale(1.08);
+}
+
+.food-card-stepper-btn:active {
+  transform: scale(0.9);
+  background-color: rgba(0, 0, 0, 0.18);
+}
+
+.food-card-stepper-count {
+  min-width: 18px;
+  text-align: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: var(--font-family-base);
+  user-select: none;
+}
+
+.stepper-icon {
+  stroke-width: 2.6;
+}
