@@ -24,13 +24,14 @@
   align-items: center;
   justify-content: space-between;
   background-color: var(--bg-surface);
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: var(--border-radius-xl);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
-  gap: 12px;
+  gap: 10px;
   flex-wrap: nowrap;
-  min-height: 50px;
+  min-height: 48px;
+  box-sizing: border-box;
 }
 
 .title-bar-heading {
@@ -40,7 +41,7 @@
 }
 
 .section-title {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 700;
   color: var(--text-main);
   margin: 0;
@@ -49,7 +50,7 @@
 }
 
 .section-caption {
-  font-size: 0.6875rem;
+  font-size: 0.65rem;
   color: var(--text-muted);
   white-space: nowrap;
   line-height: 1.2;
@@ -59,7 +60,7 @@
 .catalog-toolbar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: nowrap;
   min-width: 0;
   flex-shrink: 1;
@@ -75,21 +76,21 @@
 
 .catalog-search-icon {
   position: absolute;
-  left: 10px;
+  left: 8px;
   color: var(--text-muted);
   pointer-events: none;
   transition: color 0.2s ease;
 }
 
 .catalog-search-input {
-  height: 32px;
-  width: 140px;
+  height: 30px;
+  width: 110px;
   border-radius: var(--border-radius-full);
   border: 1px solid var(--border-color);
   background-color: #f8fafc;
-  padding: 0 24px 0 28px;
+  padding: 0 20px 0 26px;
   font-family: var(--font-family-base);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-main);
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   outline: none;
@@ -103,7 +104,7 @@
   background-color: #ffffff;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15);
-  width: 165px;
+  width: 135px;
 }
 
 .catalog-search-wrapper:focus-within .catalog-search-icon {
@@ -112,9 +113,9 @@
 
 .catalog-search-clear-btn {
   position: absolute;
-  right: 6px;
-  width: 18px;
-  height: 18px;
+  right: 5px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   border: none;
   background-color: var(--bg-muted);
@@ -132,16 +133,16 @@
   color: #ffffff;
 }
 
-/* Circular Filter Pills (Single Row Horizontal Scroll if needed) */
+/* Circular Filter Pills (Single Row with breathing room) */
 .catalog-filter-pills {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: nowrap;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 2px 0;
+  padding: 2px 8px 2px 2px;
 }
 
 .catalog-filter-pills::-webkit-scrollbar {
@@ -149,14 +150,14 @@
 }
 
 .circular-filter-pill {
-  height: 32px;
-  padding: 0 14px;
+  height: 30px;
+  padding: 0 10px;
   border-radius: var(--border-radius-full);
   border: 1px solid var(--border-color);
   background-color: #ffffff;
   color: var(--text-muted);
   font-family: var(--font-family-base);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;

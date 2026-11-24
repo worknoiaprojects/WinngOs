@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0 var(--space-4) var(--space-4);
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
   gap: var(--space-4);
   min-height: calc(100vh - 78px);
 }
