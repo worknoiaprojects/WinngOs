@@ -4,6 +4,7 @@ import TopNav, { type AppRoute } from './components/layout/TopNav/TopNav';
 import PageLayout from './components/layout/PageLayout/PageLayout';
 import ComponentPreviewPage from './pages/preview/ComponentPreviewPage';
 import FoodCard from './components/ui/FoodCard/FoodCard';
+import Dropdown, { type DropdownOption } from './components/ui/Dropdown/Dropdown';
 import dishSalmon from './assets/dish-salmon.jpg';
 import dishRisotto from './assets/dish-risotto.jpg';
 import dishGourmet from './assets/dish-gourmet.jpg';
@@ -98,7 +99,14 @@ const MENU_ITEMS: MenuItem[] = [
   },
 ];
 
-const CATEGORIES = ['All', 'Seafood', 'Risotto', 'Pasta', 'Bowls', 'Specials'] as const;
+const STANDARD_CATEGORIES = ['All', 'Seafood', 'Risotto', 'Pasta', 'Bowls'] as const;
+
+const SPECIAL_OPTIONS: DropdownOption[] = [
+  { id: 'all-specials', label: 'All Specials', badge: 'Popular' },
+  { id: 'chef-tasting', label: "Chef's Tasting", badge: 'Chef' },
+  { id: 'seasonal-citrus', label: 'Seasonal Citrus' },
+  { id: 'todays-catch', label: "Today's Fresh Catch" },
+];
 
 export function App() {
   const getInitialRoute = (): AppRoute => {
@@ -115,6 +123,8 @@ export function App() {
   const [currentRoute, setCurrentRoute] = useState<AppRoute>(getInitialRoute);
   const [cartCount, setCartCount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedSpecial, setSelectedSpecial] = useState<string | null>(null);
+  const [selectedSpecialId, setSelectedSpecialId] = useState<string | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
@@ -149,6 +159,8 @@ export function App() {
 
   const handleResetFilters = () => {
     setSelectedCategory('All');
+    setSelectedSpecial(null);
+    setSelectedSpecialId(undefined);
     setSearchQuery('');
   };
 
@@ -213,7 +225,7 @@ export function App() {
                     role="tablist"
                     aria-label="Filter menu items by category"
                   >
-                    {CATEGORIES.map((cat) => {
+                    {STANDARD_CATEGORIES.map((cat) => {
                       const isActive = selectedCategory === cat;
                       return (
                         <button
@@ -222,12 +234,33 @@ export function App() {
                           role="tab"
                           aria-selected={isActive}
                           className={`circular-filter-pill ${isActive ? 'is-active' : ''}`}
-                          onClick={() => setSelectedCategory(cat)}
+                          onClick={() => {
+                            setSelectedCategory(cat);
+                            setSelectedSpecial(null);
+                            setSelectedSpecialId(undefined);
+                          }}
                         >
                           {cat}
                         </button>
                       );
                     })}
+
+                    {/* Specials Pill with Dropdown Menu */}
+                    <Dropdown
+                      label={
+                        selectedSpecial && selectedCategory === 'Specials'
+                          ? selectedSpecial
+                          : 'Specials'
+                      }
+                      options={SPECIAL_OPTIONS}
+                      selectedId={selectedSpecialId}
+                      isActive={selectedCategory === 'Specials'}
+                      onSelect={(opt) => {
+                        setSelectedCategory('Specials');
+                        setSelectedSpecial(opt.label);
+                        setSelectedSpecialId(opt.id);
+                      }}
+                    />
                   </div>
                 </div>
               </div>

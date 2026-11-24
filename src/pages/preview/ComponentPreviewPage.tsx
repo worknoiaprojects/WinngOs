@@ -10,6 +10,7 @@ import { LoadingState, Spinner } from '../../components/states/LoadingState/Load
 import ErrorState from '../../components/states/ErrorState/ErrorState';
 import SuccessState from '../../components/states/SuccessState/SuccessState';
 import FoodCard from '../../components/ui/FoodCard/FoodCard';
+import Dropdown from '../../components/ui/Dropdown/Dropdown';
 import dishSalmon from '../../assets/dish-salmon.jpg';
 import dishRisotto from '../../assets/dish-risotto.jpg';
 import dishGourmet from '../../assets/dish-gourmet.jpg';
@@ -262,6 +263,19 @@ export function ComponentPreviewPage() {
           <Badge variant="danger" size="md">Billed / Error</Badge>
           <Badge variant="info" size="md">Bar Station</Badge>
           <Badge variant="neutral" size="md">Neutral Tag</Badge>
+        </div>
+
+        <div className="component-card" style={{ maxWidth: '320px', marginTop: 'var(--space-2)' }}>
+          <span className="state-tag">Interactive Circular Dropdown Pill</span>
+          <Dropdown
+            label="Specials Dropdown"
+            options={[
+              { id: '1', label: "Chef's Tasting", badge: 'Chef' },
+              { id: '2', label: 'Seasonal Citrus', badge: 'New' },
+              { id: '3', label: "Today's Fresh Catch" },
+            ]}
+            onSelect={() => {}}
+          />
         </div>
       </section>
 
