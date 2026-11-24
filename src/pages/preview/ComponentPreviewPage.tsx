@@ -15,11 +15,48 @@ import dishSalmon from '../../assets/dish-salmon.jpg';
 import dishRisotto from '../../assets/dish-risotto.jpg';
 import dishGourmet from '../../assets/dish-gourmet.jpg';
 import dishSalad from '../../assets/dish-salad.jpg';
-import { Plus, ExternalLink, Sparkles } from 'lucide-react';
+import {
+  Plus,
+  Minus,
+  Sparkles,
+  CreditCard,
+  Banknote,
+  QrCode,
+  AlertTriangle,
+  Utensils,
+  Receipt,
+} from 'lucide-react';
 
 export function ComponentPreviewPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
+
+  // Base Modal showcase states
+  const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+  // Customizer state
+  const [customPortion, setCustomPortion] = useState<'standard' | 'large'>('standard');
+  const [extraGlaze, setExtraGlaze] = useState(true);
+  const [extraAsparagus, setExtraAsparagus] = useState(false);
+  const [extraTruffle, setExtraTruffle] = useState(false);
+  const [cookingNote, setCookingNote] = useState('');
+  const [customQty, setCustomQty] = useState(1);
+
+  // Checkout modal state
+  const [tipPercent, setTipPercent] = useState<number>(15);
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'cash' | 'qr'>('card');
+
+  // Calculations
+  const baseItemPrice = 24.5;
+  const portionExtra = customPortion === 'large' ? 6.0 : 0;
+  const addonTotal = (extraGlaze ? 2.0 : 0) + (extraAsparagus ? 4.5 : 0) + (extraTruffle ? 7.0 : 0);
+  const totalItemPrice = ((baseItemPrice + portionExtra + addonTotal) * customQty).toFixed(2);
+
+  const subtotal = 58.0;
+  const tax = +(subtotal * 0.08).toFixed(2);
+  const tipAmount = +((subtotal * tipPercent) / 100).toFixed(2);
+  const grandTotal = (subtotal + tax + tipAmount).toFixed(2);
 
   return (
     <div className="preview-page-container">
@@ -279,44 +316,338 @@ export function ComponentPreviewPage() {
         </div>
       </section>
 
-      {/* 4. MODAL DIALOG PREVIEW */}
+      {/* 4. BASE POPUP MODAL COMPONENT (Mandatory for POS) */}
       <section className="preview-section" aria-labelledby="modal-heading">
         <div className="section-header">
-          <h2 id="modal-heading">4. Accessible Modal Dialog</h2>
-          <span className="section-note">With backdrop blur, Escape key listener, and keyboard accessibility</span>
+          <h2 id="modal-heading">4. Base Popup Modal Component (POS Base Dialogs)</h2>
+          <span className="section-note">
+            Accessible dialog with backdrop blur, smooth pop-in animations, customizable header/body/footer, and Escape key dismissal
+          </span>
         </div>
 
-        <div className="component-card modal-trigger-card">
-          <p>Test the dialog overlay, focus traps, and keyboard listeners:</p>
-          <Button
-            variant="primary"
-            icon={ExternalLink}
-            onClick={() => setIsModalOpen(true)}
-          >
-            Launch Interactive Modal
-          </Button>
-        </div>
-
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          title="Interactive Modal Dialog"
-          width="480px"
-        >
-          <div className="modal-preview-body">
-            <p>
-              This modal dialog is decoupled and styled using pure custom CSS.
-              It adheres to accessibility guidelines with <code>aria-modal="true"</code>,
-              an <code>Escape</code> key event listener, and background overlay dismiss.
+        <div className="modal-trigger-grid">
+          {/* Modal Trigger 1: Item Customization */}
+          <div className="component-card">
+            <span className="state-tag">POS Order Flow Modal</span>
+            <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '0.95rem' }}>
+              Dish Customizer Popup
+            </h4>
+            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              Configure portions, add-ons, notes, and live pricing for restaurant dishes.
             </p>
-            <div className="modal-preview-actions">
-              <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
+            <Button
+              variant="primary"
+              icon={Utensils}
+              onClick={() => setIsCustomizerOpen(true)}
+            >
+              Open Dish Customizer
+            </Button>
+          </div>
+
+          {/* Modal Trigger 2: Checkout & Payment */}
+          <div className="component-card">
+            <span className="state-tag">POS Checkout Flow</span>
+            <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '0.95rem' }}>
+              Order Checkout & Bill
+            </h4>
+            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              Table payment summary with tax calculation, tip selector, and payment method options.
+            </p>
+            <Button
+              variant="primary"
+              icon={Receipt}
+              onClick={() => setIsCheckoutOpen(true)}
+            >
+              Open Payment Modal
+            </Button>
+          </div>
+
+          {/* Modal Trigger 3: Alert / Action Confirmation */}
+          <div className="component-card">
+            <span className="state-tag">Action Confirmation</span>
+            <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '0.95rem' }}>
+              Void Order Confirmation
+            </h4>
+            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+              Compact confirmation modal with destructive or warning states.
+            </p>
+            <Button
+              variant="outline"
+              icon={AlertTriangle}
+              onClick={() => setIsConfirmOpen(true)}
+            >
+              Open Alert Modal
+            </Button>
+          </div>
+        </div>
+
+        {/* MODAL 1: POS ITEM CUSTOMIZER */}
+        <Modal
+          isOpen={isCustomizerOpen}
+          onClose={() => setIsCustomizerOpen(false)}
+          title="Customize Order Item"
+          subtitle="Select portions, chef extras, and special kitchen instructions"
+          size="md"
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setIsCustomizerOpen(false)}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={() => setIsModalOpen(false)}>
-                Confirm Action
+              <Button
+                variant="primary"
+                onClick={() => {
+                  alert(`Added to order! Total: $${totalItemPrice}`);
+                  setIsCustomizerOpen(false);
+                }}
+              >
+                Add to Order • ${totalItemPrice}
               </Button>
+            </>
+          }
+        >
+          <div className="customizer-modal-body">
+            {/* Dish Hero Card */}
+            <div className="modal-dish-preview-card">
+              <img
+                src={dishSalmon}
+                alt="Citrus Glazed Salmon"
+                className="modal-dish-thumb"
+              />
+              <div className="modal-dish-info">
+                <span className="modal-dish-title">Citrus Glazed Salmon</span>
+                <span className="modal-dish-desc">Orange Purée, Charred Citrus & Microgreens</span>
+                <span className="modal-dish-base-price">Base Price: ${baseItemPrice.toFixed(2)}</span>
+              </div>
             </div>
+
+            {/* Portion Selection */}
+            <div className="modal-form-section">
+              <label className="modal-section-label">Portion Size</label>
+              <div className="portion-pills-row">
+                <button
+                  type="button"
+                  className={`portion-select-pill ${customPortion === 'standard' ? 'is-selected' : ''}`}
+                  onClick={() => setCustomPortion('standard')}
+                >
+                  Standard Portion
+                </button>
+                <button
+                  type="button"
+                  className={`portion-select-pill ${customPortion === 'large' ? 'is-selected' : ''}`}
+                  onClick={() => setCustomPortion('large')}
+                >
+                  Large Portion (+ $6.00)
+                </button>
+              </div>
+            </div>
+
+            {/* Add-on Extras */}
+            <div className="modal-form-section">
+              <label className="modal-section-label">Chef Extras & Add-ons</label>
+              <div className="modal-addons-list">
+                <label className="modal-addon-checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={extraGlaze}
+                    onChange={(e) => setExtraGlaze(e.target.checked)}
+                    className="modal-checkbox"
+                  />
+                  <span className="addon-label">Extra Honey Orange Glaze</span>
+                  <span className="addon-price">+ $2.00</span>
+                </label>
+                <label className="modal-addon-checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={extraAsparagus}
+                    onChange={(e) => setExtraAsparagus(e.target.checked)}
+                    className="modal-checkbox"
+                  />
+                  <span className="addon-label">Pan-Roasted Asparagus</span>
+                  <span className="addon-price">+ $4.50</span>
+                </label>
+                <label className="modal-addon-checkbox-row">
+                  <input
+                    type="checkbox"
+                    checked={extraTruffle}
+                    onChange={(e) => setExtraTruffle(e.target.checked)}
+                    className="modal-checkbox"
+                  />
+                  <span className="addon-label">Shaved Black Truffle</span>
+                  <span className="addon-price">+ $7.00</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Kitchen Instructions */}
+            <div className="modal-form-section">
+              <label htmlFor="modal-kitchen-note" className="modal-section-label">
+                Special Kitchen Instructions
+              </label>
+              <input
+                id="modal-kitchen-note"
+                type="text"
+                placeholder="e.g. Extra crispy skin, dressing on the side..."
+                value={cookingNote}
+                onChange={(e) => setCookingNote(e.target.value)}
+                className="modal-kitchen-input"
+              />
+            </div>
+
+            {/* Quantity Selector */}
+            <div className="modal-form-section modal-quantity-row">
+              <label className="modal-section-label" style={{ margin: 0 }}>
+                Quantity
+              </label>
+              <div className="modal-stepper-control">
+                <button
+                  type="button"
+                  className="modal-stepper-btn"
+                  onClick={() => setCustomQty((q) => Math.max(1, q - 1))}
+                  aria-label="Decrease quantity"
+                >
+                  <Minus size={14} />
+                </button>
+                <span className="modal-stepper-value">{customQty}</span>
+                <button
+                  type="button"
+                  className="modal-stepper-btn"
+                  onClick={() => setCustomQty((q) => q + 1)}
+                  aria-label="Increase quantity"
+                >
+                  <Plus size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </Modal>
+
+        {/* MODAL 2: POS CHECKOUT & PAYMENT */}
+        <Modal
+          isOpen={isCheckoutOpen}
+          onClose={() => setIsCheckoutOpen(false)}
+          title="Order Payment & Checkout"
+          subtitle="Table 04 • 2 Guests • Server: Alex M."
+          size="md"
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setIsCheckoutOpen(false)}>
+                Back
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  alert(`Payment of $${grandTotal} processed successfully!`);
+                  setIsCheckoutOpen(false);
+                }}
+              >
+                Complete Payment (${grandTotal})
+              </Button>
+            </>
+          }
+        >
+          <div className="checkout-modal-body">
+            {/* Bill Summary Table */}
+            <div className="checkout-summary-card">
+              <div className="checkout-line-row">
+                <span>Subtotal (3 items)</span>
+                <span className="checkout-line-val">${subtotal.toFixed(2)}</span>
+              </div>
+              <div className="checkout-line-row">
+                <span>Sales Tax (8%)</span>
+                <span className="checkout-line-val">${tax.toFixed(2)}</span>
+              </div>
+              <div className="checkout-line-row">
+                <span>Tip Amount ({tipPercent}%)</span>
+                <span className="checkout-line-val">${tipAmount.toFixed(2)}</span>
+              </div>
+              <div className="checkout-line-row checkout-total-row">
+                <span>Grand Total</span>
+                <span className="checkout-total-val">${grandTotal}</span>
+              </div>
+            </div>
+
+            {/* Tip Percentage Selection */}
+            <div className="modal-form-section">
+              <label className="modal-section-label">Tip Selection</label>
+              <div className="portion-pills-row">
+                {[10, 15, 20, 25].map((tip) => (
+                  <button
+                    key={tip}
+                    type="button"
+                    className={`portion-select-pill ${tipPercent === tip ? 'is-selected' : ''}`}
+                    onClick={() => setTipPercent(tip)}
+                  >
+                    {tip}% (${((subtotal * tip) / 100).toFixed(2)})
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Payment Method Selector */}
+            <div className="modal-form-section">
+              <label className="modal-section-label">Payment Method</label>
+              <div className="payment-methods-grid">
+                <button
+                  type="button"
+                  className={`payment-method-card ${paymentMethod === 'card' ? 'is-active' : ''}`}
+                  onClick={() => setPaymentMethod('card')}
+                >
+                  <CreditCard size={20} className="pay-icon" />
+                  <span>Credit Card</span>
+                </button>
+                <button
+                  type="button"
+                  className={`payment-method-card ${paymentMethod === 'cash' ? 'is-active' : ''}`}
+                  onClick={() => setPaymentMethod('cash')}
+                >
+                  <Banknote size={20} className="pay-icon" />
+                  <span>Cash</span>
+                </button>
+                <button
+                  type="button"
+                  className={`payment-method-card ${paymentMethod === 'qr' ? 'is-active' : ''}`}
+                  onClick={() => setPaymentMethod('qr')}
+                >
+                  <QrCode size={20} className="pay-icon" />
+                  <span>Digital / QR</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </Modal>
+
+        {/* MODAL 3: VOID / ALERT CONFIRMATION */}
+        <Modal
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          title="Void Order #1048?"
+          subtitle="Destructive action confirmation"
+          size="sm"
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setIsConfirmOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => {
+                  alert('Order #1048 has been voided.');
+                  setIsConfirmOpen(false);
+                }}
+              >
+                Void Order
+              </Button>
+            </>
+          }
+        >
+          <div className="confirm-modal-body">
+            <div className="confirm-warning-icon-wrapper">
+              <AlertTriangle size={32} className="confirm-warning-icon" />
+            </div>
+            <p className="confirm-modal-text">
+              Are you sure you want to void order <strong>#1048</strong>?
+              All prepared items will be removed from Table 4 and sent to the kitchen cancellation feed.
+            </p>
           </div>
         </Modal>
       </section>

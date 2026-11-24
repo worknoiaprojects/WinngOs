@@ -183,26 +183,357 @@
   box-shadow: var(--shadow-sm);
 }
 
-.modal-trigger-card {
-  align-items: flex-start;
+.modal-trigger-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
 }
 
-.modal-preview-body {
+/* Modal Content Styling (Base POS Dialogs) */
+.customizer-modal-body,
+.checkout-modal-body,
+.confirm-modal-body {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
-.modal-preview-body p {
-  color: var(--text-muted);
-  font-size: var(--font-size-sm);
-  line-height: 1.6;
+/* Dish Preview Banner inside Modal */
+.modal-dish-preview-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background-color: var(--color-primary-light);
+  border: 1px solid rgba(249, 115, 22, 0.18);
+  border-radius: var(--border-radius-lg);
+  padding: 12px 16px;
 }
 
-.modal-preview-actions {
+.modal-dish-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 8px rgba(249, 115, 22, 0.2);
+  flex-shrink: 0;
+}
+
+.modal-dish-info {
   display: flex;
-  justify-content: flex-end;
-  gap: var(--space-2);
+  flex-direction: column;
+  gap: 2px;
+}
+
+.modal-dish-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.modal-dish-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.modal-dish-base-price {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-top: 2px;
+}
+
+/* Form Sections inside Modal */
+.modal-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Portion Pills */
+.portion-pills-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.portion-select-pill {
+  flex: 1;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: var(--border-radius-full);
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+  color: var(--text-muted);
+  font-family: var(--font-family-base);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+
+.portion-select-pill:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+.portion-select-pill.is-selected {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
+}
+
+/* Add-ons Checklist */
+.modal-addons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-addon-checkbox-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background-color: #fafbfc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.modal-addon-checkbox-row:hover {
+  background-color: var(--color-primary-light);
+  border-color: rgba(249, 115, 22, 0.25);
+}
+
+.modal-checkbox {
+  accent-color: var(--color-primary);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.addon-label {
+  flex: 1;
+  margin-left: 10px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.addon-price {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* Kitchen Notes Input */
+.modal-kitchen-input {
+  width: 100%;
+  height: 38px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background-color: #f8fafc;
+  padding: 0 12px;
+  font-family: var(--font-family-base);
+  font-size: 0.8125rem;
+  color: var(--text-main);
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.modal-kitchen-input:focus {
+  background-color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.18);
+}
+
+/* Quantity Row */
+.modal-quantity-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border-color);
+}
+
+.modal-stepper-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-primary-light);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: var(--border-radius-full);
+  padding: 3px 8px;
+}
+
+.modal-stepper-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.modal-stepper-btn:hover {
+  background-color: var(--color-primary-hover);
+  transform: scale(1.06);
+}
+
+.modal-stepper-btn:active {
+  transform: scale(0.92);
+}
+
+.modal-stepper-value {
+  min-width: 20px;
+  text-align: center;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Checkout Bill Summary */
+.checkout-summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: #fafbfc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 14px 18px;
+}
+
+.checkout-line-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.checkout-line-val {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.checkout-total-row {
+  border-top: 1px dashed rgba(249, 115, 22, 0.25);
+  padding-top: 10px;
+  margin-top: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.checkout-total-val {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+/* Payment Methods Grid */
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.payment-method-card {
+  height: 64px;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.payment-method-card .pay-icon {
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.payment-method-card:hover {
+  background-color: var(--color-primary-light);
+  border-color: rgba(249, 115, 22, 0.3);
+  color: var(--color-primary);
+}
+
+.payment-method-card:hover .pay-icon {
+  color: var(--color-primary);
+}
+
+.payment-method-card.is-active {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+}
+
+.payment-method-card.is-active .pay-icon {
+  color: var(--color-primary);
+}
+
+/* Void Confirmation Dialog */
+.confirm-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.confirm-warning-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-danger-light);
+  color: var(--color-danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-warning-icon {
+  stroke-width: 2.2;
+}
+
+.confirm-modal-text {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
 }
 
 .feedback-states-grid {
