@@ -24,38 +24,45 @@
   align-items: center;
   justify-content: space-between;
   background-color: var(--bg-surface);
-  padding: var(--space-3) var(--space-5);
+  padding: 8px 16px;
   border-radius: var(--border-radius-xl);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
-  gap: var(--space-4);
-  flex-wrap: wrap;
+  gap: 12px;
+  flex-wrap: nowrap;
+  min-height: 50px;
 }
 
 .title-bar-heading {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .section-title {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
+  font-size: 0.9375rem;
+  font-weight: 700;
   color: var(--text-main);
   margin: 0;
-  line-height: 1.25;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .section-caption {
-  font-size: var(--font-size-xs);
+  font-size: 0.6875rem;
   color: var(--text-muted);
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
-/* Catalog Toolbar: Search Bar + Circular Filter Pills */
+/* Catalog Toolbar: Search Bar + Circular Filter Pills in One Row */
 .catalog-toolbar {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
+  gap: 8px;
+  flex-wrap: nowrap;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 /* Pill Search Bar */
@@ -63,25 +70,26 @@
   position: relative;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .catalog-search-icon {
   position: absolute;
-  left: 12px;
+  left: 10px;
   color: var(--text-muted);
   pointer-events: none;
   transition: color 0.2s ease;
 }
 
 .catalog-search-input {
-  height: 36px;
-  width: 180px;
+  height: 32px;
+  width: 140px;
   border-radius: var(--border-radius-full);
   border: 1px solid var(--border-color);
   background-color: #f8fafc;
-  padding: 0 30px 0 34px;
+  padding: 0 24px 0 28px;
   font-family: var(--font-family-base);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--text-main);
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   outline: none;
@@ -94,8 +102,8 @@
 .catalog-search-input:focus {
   background-color: #ffffff;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
-  width: 210px;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15);
+  width: 165px;
 }
 
 .catalog-search-wrapper:focus-within .catalog-search-icon {
@@ -104,9 +112,9 @@
 
 .catalog-search-clear-btn {
   position: absolute;
-  right: 8px;
-  width: 20px;
-  height: 20px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   border: none;
   background-color: var(--bg-muted);
@@ -124,23 +132,31 @@
   color: #ffffff;
 }
 
-/* Circular Filter Pills */
+/* Circular Filter Pills (Single Row Horizontal Scroll if needed) */
 .catalog-filter-pills {
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2px 0;
+}
+
+.catalog-filter-pills::-webkit-scrollbar {
+  display: none;
 }
 
 .circular-filter-pill {
-  height: 36px;
-  padding: 0 16px;
+  height: 32px;
+  padding: 0 14px;
   border-radius: var(--border-radius-full);
   border: 1px solid var(--border-color);
   background-color: #ffffff;
   color: var(--text-muted);
   font-family: var(--font-family-base);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
@@ -149,6 +165,7 @@
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   user-select: none;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .circular-filter-pill:hover {
@@ -294,32 +311,19 @@
   }
 
   .section-title-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 8px 12px;
+  }
+
+  .section-title-bar::-webkit-scrollbar {
+    display: none;
   }
 
   .catalog-toolbar {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-2);
-  }
-
-  .catalog-search-wrapper,
-  .catalog-search-input {
-    width: 100%;
-  }
-
-  .catalog-search-input:focus {
-    width: 100%;
-  }
-
-  .catalog-filter-pills {
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 4px;
     flex-wrap: nowrap;
+    flex-shrink: 0;
   }
 }
